@@ -1,5 +1,7 @@
 # spr-simplex
 
+<img width="850" alt="spr-simplex UI preview" src="docs/screenshot.png" />
+
 Run a self-hosted [SimpleX](https://simplex.chat) messaging relay —
 `smp-server` from
 [simplex-chat/simplexmq](https://github.com/simplex-chat/simplexmq) — as an
