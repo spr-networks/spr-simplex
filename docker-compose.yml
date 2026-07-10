@@ -1,0 +1,35 @@
+version: '3.4'
+
+x-labels:
+  &default-labels
+  # constant (not $CI) so digests are reproducible across CI/local
+  org.supernetworks.ci: "true"
+  org.supernetworks.version: ${RELEASE_VERSION:-latest}${RELEASE_CHANNEL:-}
+
+services:
+  spr-simplex:
+    container_name: spr-simplex
+    image: ghcr.io/spr-networks/spr-simplex:${RELEASE_VERSION:-latest}${RELEASE_CHANNEL:-}
+    build:
+      context: "${BUILDCTX:-.}"
+      labels: *default-labels
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      simplexnet:
+    volumes:
+      - "${SUPERDIR}./state/plugins/spr-simplex:/state/plugins/spr-simplex"
+      - "${SUPERDIR}./configs/base/config.sh:/configs/base/config.sh:ro"
+      - "${SUPERDIR}./configs/plugins/spr-simplex:/configs/spr-simplex"
+      # smp-server keys/cert/ini and store logs live under the plugin state
+      # dir so the server identity (fingerprint) survives container rebuilds.
+      - "${SUPERDIR}./state/plugins/spr-simplex/smp/etc:/etc/opt/simplex"
+      - "${SUPERDIR}./state/plugins/spr-simplex/smp/var:/var/opt/simplex"
+
+# The bridge name must match NetworkCapabilities.Interface in plugin.json and
+# the Interface used for the /firewall/custom_interface rule in install.sh.
+networks:
+  simplexnet:
+    name: spr-simplex
+    driver_opts:
+      com.docker.network.bridge.name: spr-simplex

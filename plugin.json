@@ -1,0 +1,17 @@
+{
+  "Name": "spr-simplex",
+  "ComposeFilePath": "plugins/user/spr-simplex/docker-compose.yml",
+  "UnixPath": "/state/plugins/spr-simplex/socket",
+  "URI": "spr-simplex",
+  "HasUI": true,
+  "Icon": "MessageCircle",
+  "HasTopology": true,
+  "SandboxedUI": false,
+  "InstallTokenPath": "/configs/plugins/spr-simplex/api-token",
+  "NetworkCapabilities": {
+    "Interface": "spr-simplex",
+    "Policies": ["lan", "wan", "dns"],
+    "Groups": ["simplex"]
+  },
+  "Enabled": true
+}
