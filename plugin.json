@@ -4,7 +4,7 @@
   "UnixPath": "/state/plugins/spr-simplex/socket",
   "URI": "spr-simplex",
   "HasUI": true,
-  "Icon": "MessageCircle",
+  "Icon": "Mail",
   "HasTopology": true,
   "SandboxedUI": false,
   "InstallTokenPath": "/configs/plugins/spr-simplex/api-token",
