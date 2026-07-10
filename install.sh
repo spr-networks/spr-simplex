@@ -30,13 +30,13 @@ CONTAINER_IP=$(docker inspect --format '{{range .NetworkSettings.Networks}}{{.IP
 API=127.0.0.1
 
 # Register the plugin's bridge interface with the SPR firewall:
-# lan lets SPR LAN devices reach the relay on ${CONTAINER_IP}:5223,
+# The simplex group gates access to the relay on ${CONTAINER_IP}:5223;
 # wan+dns lets the relay forward messages to other SMP relays (SimpleX
 # private message routing).
 curl "http://${API}/firewall/custom_interface" \
 -H "Authorization: Bearer ${SPR_API_TOKEN}" \
 -X 'PUT' \
---data-raw "{\"SrcIP\":\"${CONTAINER_IP}\",\"Interface\":\"spr-simplex\",\"Policies\":[\"lan\",\"wan\",\"dns\"]}"
+--data-raw "{\"SrcIP\":\"${CONTAINER_IP}\",\"Interface\":\"spr-simplex\",\"Policies\":[\"wan\",\"dns\"],\"Groups\":[\"simplex\"]}"
 
 docker compose restart
 

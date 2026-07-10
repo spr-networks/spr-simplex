@@ -47,12 +47,12 @@ only exposed on the `spr-simplex` docker bridge; SPR policies and the
 `smp-server` binds `CONTAINER_IP:5223` (TLS) on the `spr-simplex` bridge. Two
 ways to let SimpleX clients reach it:
 
-1. **LAN-only (default).** The plugin interface carries the `lan` policy
-   (plus the `simplex` group), so devices on the SPR LAN can reach
+1. **Group-only (default).** The plugin interface carries the `simplex` group
+   and no `lan` policy, so only devices assigned to `simplex` can reach
    `CONTAINER_IP:5223` directly. Copy the address from the UI and add it in
    the SimpleX app while on your network. Messages *to* you flow through your
    relay whenever the sender can reach it — which with this setup means while
-   your devices are on the LAN.
+   grouped devices are on the LAN.
 
 2. **Internet exposure (optional, documented only).** To serve roaming
    devices and let contacts reach your queues from anywhere, add an SPR port
@@ -75,8 +75,8 @@ proxies your sends so destination relays never see your IP).
 In the SPR UI: **Plugins → + New Plugin** and enter this repository's GitHub
 URL (e.g. `https://github.com/USER/spr-simplex`). SPR clones the repo, builds
 the container and starts the plugin. The `plugin.json` `NetworkCapabilities`
-register the `spr-simplex` interface with the `lan`, `wan` and `dns` policies
-and the `simplex` group automatically.
+register the `spr-simplex` interface with the `wan` and `dns` policies and the
+`simplex` group automatically. It does not receive the broad `lan` policy.
 
 ## Install (CLI)
 
@@ -88,7 +88,7 @@ cd spr-simplex
 
 `install.sh` writes the API token, builds and starts the container, and
 registers the container IP with SPR's firewall
-(`PUT /firewall/custom_interface`, policies `lan wan dns`).
+(`PUT /firewall/custom_interface`, policies `wan dns`, group `simplex`).
 
 ## API
 
@@ -145,8 +145,8 @@ would strand every client.
 - **No published host ports**; `network_mode: host` is not used. The only
   listeners are the plugin unix socket (0770) and smp-server on the container
   IP `:5223` on the dedicated `spr-simplex` bridge, gated by SPR
-  policies/groups (`lan` so LAN devices can use the relay, `wan`/`dns` egress
-  for SMP private message routing).
+  policies/groups (`simplex` for selected client access, `wan`/`dns` egress
+  for SMP private message routing; no broad `lan` policy).
 - **No extra capabilities** (`cap_add` empty — smp-server is a plain
   userspace process), no devices,
   `security_opt: no-new-privileges:true`.

@@ -10,7 +10,7 @@
   "InstallTokenPath": "/configs/plugins/spr-simplex/api-token",
   "NetworkCapabilities": {
     "Interface": "spr-simplex",
-    "Policies": ["lan", "wan", "dns"],
+    "Policies": ["wan", "dns"],
     "Groups": ["simplex"]
   },
   "Enabled": true
