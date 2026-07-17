@@ -1,6 +1,6 @@
 {
   "Name": "spr-simplex",
-  "ComposeFilePath": "plugins/user/spr-simplex/docker-compose.yml",
+  "ComposeFilePath": "plugins/user/spr-simplex/docker-compose-krun.yml",
   "UnixPath": "/state/plugins/spr-simplex/socket",
   "URI": "spr-simplex",
   "HasUI": true,
@@ -9,7 +9,8 @@
   "SandboxedUI": false,
   "InstallTokenPath": "/configs/plugins/spr-simplex/api-token",
   "NetworkCapabilities": {
-    "Interface": "spr-simplex",
+    "Interface": "ksimplex0",
+    "DeviceMAC": "02:53:50:52:4b:0f",
     "Policies": ["wan", "dns"],
     "Groups": ["simplex"]
   },

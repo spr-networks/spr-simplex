@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-var UNIX_PLUGIN_LISTENER = "/state/plugins/spr-simplex/socket"
+var UNIX_PLUGIN_LISTENER = "/run/spr-krun-plugin/spr-simplex.sock"
 
 // Status is the GET /status response.
 type Status struct {

@@ -23,10 +23,25 @@ mkdir -p "$SUPERDIR/configs/plugins/spr-simplex"
 printf '%s' "$SPR_API_TOKEN" > "$SUPERDIR/configs/plugins/spr-simplex/api-token"
 chmod 600 "$SUPERDIR/configs/plugins/spr-simplex/api-token"
 
-docker compose build
-docker compose up -d
+KRUN_MAC="02:53:50:52:4b:0f"
+KRUN_TAP="ksimplex0"
+curl --fail-with-body --silent --show-error "http://127.0.0.1/device?identity=${KRUN_MAC}" \
+  -H "Authorization: Bearer ${SPR_API_TOKEN}" -H "Content-Type: application/json" \
+  -X PUT --data-raw "{\"MAC\":\"${KRUN_MAC}\",\"Name\":\"spr-simplex\",\"Policies\":[\"wan\",\"dns\"],\"Groups\":[\"simplex\"]}" >/dev/null
+if ! sudo nft get element inet filter dhcp_access "{ \"${KRUN_TAP}\" . ${KRUN_MAC} }" >/dev/null 2>&1; then
+  sudo nft add element inet filter dhcp_access "{ \"${KRUN_TAP}\" . ${KRUN_MAC} : accept }"
+fi
 
-CONTAINER_IP=$(docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "spr-simplex")
+docker compose -f docker-compose-krun.yml build
+docker compose -f docker-compose-krun.yml up -d
+
+CONTAINER_IP=
+for _ in $(seq 1 30); do
+  CONTAINER_IP="$(jq -r --arg mac "$KRUN_MAC" '.[$mac].RecentIP // empty' "$SUPERDIR/state/public/devices-public.json")"
+  [ -n "$CONTAINER_IP" ] && break
+  sleep 1
+done
+[ -n "$CONTAINER_IP" ] || { echo "spr-simplex did not obtain an SPR DHCP lease" >&2; exit 1; }
 API=127.0.0.1
 
 # Register the plugin's bridge interface with the SPR firewall:
@@ -36,9 +51,9 @@ API=127.0.0.1
 curl "http://${API}/firewall/custom_interface" \
 -H "Authorization: Bearer ${SPR_API_TOKEN}" \
 -X 'PUT' \
---data-raw "{\"SrcIP\":\"${CONTAINER_IP}\",\"Interface\":\"spr-simplex\",\"Policies\":[\"wan\",\"dns\"],\"Groups\":[\"simplex\"]}"
+--data-raw "{\"SrcIP\":\"${CONTAINER_IP}\",\"Interface\":\"${KRUN_TAP}\",\"Policies\":[\"wan\",\"dns\"],\"Groups\":[\"simplex\"]}"
 
-docker compose restart
+docker compose -f docker-compose-krun.yml restart
 
 echo ""
 echo "spr-simplex is up. Open Plugins -> spr-simplex in the SPR UI to copy"
