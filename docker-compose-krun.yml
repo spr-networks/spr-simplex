@@ -3,7 +3,7 @@ services:
     extends:
       file: docker-compose.yml
       service: spr-simplex
-    runtime: ${SPR_KRUN_RUNTIME:-krun-atlas}
+    runtime: ${SPR_KRUN_RUNTIME:-spr-krun}
     network_mode: host
     networks: !reset []
     annotations:
