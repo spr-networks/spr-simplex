@@ -1,6 +1,6 @@
 {
   "Name": "spr-simplex",
-  "ComposeFilePath": "plugins/user/spr-simplex/docker-compose-krun.yml",
+  "Runtime": "kvm",
   "UnixPath": "/state/plugins/spr-simplex/socket",
   "URI": "spr-simplex",
   "HasUI": true,

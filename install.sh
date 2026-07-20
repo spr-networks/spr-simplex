@@ -32,8 +32,8 @@ if ! sudo nft get element inet filter dhcp_access "{ \"${KRUN_TAP}\" . ${KRUN_MA
   sudo nft add element inet filter dhcp_access "{ \"${KRUN_TAP}\" . ${KRUN_MAC} : accept }"
 fi
 
-docker compose -f docker-compose-krun.yml build
-docker compose -f docker-compose-krun.yml up -d
+docker compose -f docker-compose-kvm.yml build
+docker compose -f docker-compose-kvm.yml up -d
 
 CONTAINER_IP=
 for _ in $(seq 1 30); do
@@ -53,7 +53,7 @@ curl "http://${API}/firewall/custom_interface" \
 -X 'PUT' \
 --data-raw "{\"SrcIP\":\"${CONTAINER_IP}\",\"Interface\":\"${KRUN_TAP}\",\"Policies\":[\"wan\",\"dns\"],\"Groups\":[\"simplex\"]}"
 
-docker compose -f docker-compose-krun.yml restart
+docker compose -f docker-compose-kvm.yml restart
 
 echo ""
 echo "spr-simplex is up. Open Plugins -> spr-simplex in the SPR UI to copy"
