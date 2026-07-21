@@ -9,7 +9,7 @@
   "SandboxedUI": false,
   "InstallTokenPath": "/configs/plugins/spr-simplex/api-token",
   "NetworkCapabilities": {
-    "Interface": "ksimplex0",
+    "Interface": "spr-simplex",
     "DeviceMAC": "02:53:50:52:4b:0f",
     "Policies": ["wan", "dns"],
     "Groups": ["simplex"]

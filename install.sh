@@ -24,12 +24,12 @@ printf '%s' "$SPR_API_TOKEN" > "$SUPERDIR/configs/plugins/spr-simplex/api-token"
 chmod 600 "$SUPERDIR/configs/plugins/spr-simplex/api-token"
 
 KRUN_MAC="02:53:50:52:4b:0f"
-KRUN_TAP="ksimplex0"
+PLUGIN_INTERFACE="spr-simplex"
 curl --fail-with-body --silent --show-error "http://127.0.0.1/device?identity=${KRUN_MAC}" \
   -H "Authorization: Bearer ${SPR_API_TOKEN}" -H "Content-Type: application/json" \
   -X PUT --data-raw "{\"MAC\":\"${KRUN_MAC}\",\"Name\":\"spr-simplex\",\"Policies\":[\"wan\",\"dns\"],\"Groups\":[\"simplex\"]}" >/dev/null
-if ! sudo nft get element inet filter dhcp_access "{ \"${KRUN_TAP}\" . ${KRUN_MAC} }" >/dev/null 2>&1; then
-  sudo nft add element inet filter dhcp_access "{ \"${KRUN_TAP}\" . ${KRUN_MAC} : accept }"
+if ! sudo nft get element inet filter dhcp_access "{ \"${PLUGIN_INTERFACE}\" . ${KRUN_MAC} }" >/dev/null 2>&1; then
+  sudo nft add element inet filter dhcp_access "{ \"${PLUGIN_INTERFACE}\" . ${KRUN_MAC} : accept }"
 fi
 
 docker compose -f docker-compose-kvm.yml build
@@ -51,7 +51,7 @@ API=127.0.0.1
 curl "http://${API}/firewall/custom_interface" \
 -H "Authorization: Bearer ${SPR_API_TOKEN}" \
 -X 'PUT' \
---data-raw "{\"SrcIP\":\"${CONTAINER_IP}\",\"Interface\":\"${KRUN_TAP}\",\"Policies\":[\"wan\",\"dns\"],\"Groups\":[\"simplex\"]}"
+--data-raw "{\"SrcIP\":\"${CONTAINER_IP}\",\"Interface\":\"${PLUGIN_INTERFACE}\",\"Policies\":[\"wan\",\"dns\"],\"Groups\":[\"simplex\"]}"
 
 docker compose -f docker-compose-kvm.yml restart
 
