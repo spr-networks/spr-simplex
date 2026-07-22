@@ -1,7 +1,7 @@
 {
   "Name": "spr-simplex",
   "Runtime": "kvm",
-  "UnixPath": "/state/plugins/spr-simplex/socket",
+  "UnixPath": "/state/plugins/spr-simplex/socket.sock",
   "URI": "spr-simplex",
   "HasUI": true,
   "Icon": "Mail",

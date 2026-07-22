@@ -37,7 +37,7 @@ the one thing you need — your copyable `smp://` relay address.
 ## How it integrates with SPR
 
 SPR proxies `/plugins/spr-simplex/…` to the plugin's unix socket at
-`/state/plugins/spr-simplex/socket` and embeds the UI (served from the same
+`/state/plugins/spr-simplex/socket.sock` and embeds the UI (served from the same
 socket) as an iframe under **Plugins → spr-simplex**. The SMP relay itself is
 only exposed on the `spr-simplex` docker bridge; SPR policies and the
 `simplex` device group decide who can reach it.
