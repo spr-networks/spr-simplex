@@ -16,6 +16,10 @@ services:
     environment:
       SPR_KRUN_PLUGIN_SOCKET: "/run/spr-krun-plugin/spr-simplex.sock"
       SPR_KRUN_VSOCK_PORT: "4040"
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
     devices:
       - "/dev/net/tun:/dev/net/tun"
 
