@@ -2,7 +2,7 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ dev ]
+    branches: [ dev, krun ]
   workflow_run:
     workflows: ["Bump version"]
     types:
@@ -42,6 +42,10 @@ jobs:
         name: Set release channel for dev
         run: echo "RELEASE_CHANNEL=-dev" >> "$GITHUB_ENV"
         if: ${{ github.ref_name == 'dev' }}
+      -
+        name: Set release channel for krun
+        run: echo "RELEASE_CHANNEL=-krun" >> "$GITHUB_ENV"
+        if: ${{ github.ref_name == 'krun' }}
       -
         name: Test release tag version and channel
         run: echo "RELEASE_VERSION == $RELEASE_VERSION  CHANNEL == $RELEASE_CHANNEL"

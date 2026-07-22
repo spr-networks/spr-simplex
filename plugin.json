@@ -1,14 +1,15 @@
 {
   "Name": "spr-simplex",
-  "ComposeFilePath": "plugins/user/spr-simplex/docker-compose.yml",
+  "Runtime": "kvm",
   "UnixPath": "/state/plugins/spr-simplex/socket",
   "URI": "spr-simplex",
   "HasUI": true,
   "Icon": "Mail",
   "HasTopology": true,
-  "SandboxedUI": false,
+  "SandboxedUI": true,
   "NetworkCapabilities": {
     "Interface": "spr-simplex",
+    "DeviceMAC": "02:53:50:52:4b:0f",
     "Policies": ["wan", "dns"],
     "Groups": ["simplex"]
   },
