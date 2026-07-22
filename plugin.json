@@ -7,7 +7,6 @@
   "Icon": "Mail",
   "HasTopology": true,
   "SandboxedUI": false,
-  "InstallTokenPath": "/configs/plugins/spr-simplex/api-token",
   "NetworkCapabilities": {
     "Interface": "spr-simplex",
     "DeviceMAC": "02:53:50:52:4b:0f",
