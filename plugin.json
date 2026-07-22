@@ -7,7 +7,6 @@
   "Icon": "Mail",
   "HasTopology": true,
   "SandboxedUI": false,
-  "InstallTokenPath": "/configs/plugins/spr-simplex/api-token",
   "NetworkCapabilities": {
     "Interface": "spr-simplex",
     "Policies": ["wan", "dns"],
