@@ -9,7 +9,7 @@ x-labels:
 services:
   spr-simplex:
     container_name: spr-simplex
-    image: ghcr.io/spr-networks/spr-simplex:${RELEASE_VERSION:-latest}${RELEASE_CHANNEL:-}
+    image: ghcr.io/spr-networks/spr-simplex:latest
     build:
       context: "${BUILDCTX:-.}"
       labels: *default-labels

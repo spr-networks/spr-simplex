@@ -3,7 +3,7 @@ services:
     extends:
       file: docker-compose.yml
       service: spr-simplex
-    image: ghcr.io/spr-networks/spr-simplex:${RELEASE_VERSION:-latest}${RELEASE_CHANNEL:--krun}
+    image: ghcr.io/spr-networks/spr-simplex:latest
     runtime: ${SPR_KRUN_RUNTIME:-spr-krun}
     annotations:
       krun.cpus: "${SPR_KRUN_CPUS:-1}"
