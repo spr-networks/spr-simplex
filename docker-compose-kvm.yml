@@ -4,6 +4,7 @@ services:
       file: docker-compose.yml
       service: spr-simplex
     image: ghcr.io/spr-networks/spr-simplex:latest
+    build: !reset null
     runtime: ${SPR_KRUN_RUNTIME:-spr-krun}
     annotations:
       krun.cpus: "${SPR_KRUN_CPUS:-1}"
@@ -27,3 +28,4 @@ networks:
     name: spr-simplex
     driver_opts:
       com.docker.network.bridge.name: spr-simplex
+      com.docker.network.bridge.inhibit_ipv4: "true"
